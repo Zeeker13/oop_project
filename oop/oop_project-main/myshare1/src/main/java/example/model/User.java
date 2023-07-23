@@ -1,35 +1,13 @@
 package example.model;
 
 public class User {
+    private String username;
     private String name;
     private String email;
     private String phone;
     private String address;
     private String password;
-    private String username;
     private String setRole;
-
-    public User() {
-    }
-
-    public User(String name, String email, String phone, String address, String password, String comboBoxValue) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.password = password;
-        this.setRole = comboBoxValue;
-    }
-
-    // Getters and setters for the class variables
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getUsername() {
         return username;
@@ -37,6 +15,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -75,7 +61,18 @@ public class User {
         return setRole;
     }
 
-    public void setSetRole(String comboBoxValue) {
-        this.setRole = comboBoxValue;
+    public void setSetRole(String setRole) {
+        this.setRole = setRole;
     }
+
+    public User(String name, String email, String phone, String address, String password, String setRole) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.password = password;
+        this.setRole = setRole;
+    }
+
+
 }

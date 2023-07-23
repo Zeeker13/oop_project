@@ -1,3 +1,4 @@
+// Register.java
 package example.view;
 
 import javax.swing.*;
@@ -7,23 +8,24 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import example.model.User;
 
 public class Register extends JDialog {
+    private JPanel registerPanel;
     private JTextField nametxt;
     private JTextField usernametxt;
     private JTextField emailtxt;
     private JTextField addresstxt;
-    private JTextField passwordtxt;
+    private JPasswordField passwordtxt;
+    private JPasswordField confirmPasstxt;
     private JButton signinButton;
     private JButton cancelButton;
-    private JPanel registerPanel;
     private JTextField contxt;
     private JComboBox<String> comboBox1;
 
-    public Register(JFrame parent) {
+    public Register(JDialog parent) {
         super(parent);
         setTitle("Create a new account");
         setContentPane(registerPanel);
@@ -38,6 +40,7 @@ public class Register extends JDialog {
                 registerUser();
             }
         });
+
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,11 +62,11 @@ public class Register extends JDialog {
         String email = emailtxt.getText();
         String phone = contxt.getText();
         String address = addresstxt.getText();
-        String password = passwordtxt.getText();
-        String confirmPassword = new String(contxt.getText());
-        String comboBoxValue = (String) comboBox1.getSelectedItem();
+        String password = new String(passwordtxt.getPassword());
+        String confirmPassword = new String(confirmPasstxt.getPassword());
+        String setRole = (String) comboBox1.getSelectedItem();
 
-        if (name.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || password.isEmpty() || comboBoxValue.isEmpty()) {
+        if (name.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || password.isEmpty() || setRole.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Please enter all fields",
                     "Try again",
@@ -87,7 +90,7 @@ public class Register extends JDialog {
             return;
         }
 
-        User user = addUserToDatabase(name, username, email, phone, address, password, comboBoxValue);
+        User user = addUserToDatabase(name, username, email, phone, address, password, setRole);
         if (user != null) {
             JOptionPane.showMessageDialog(this,
                     "Registration successful for: " + user.getName(),
@@ -102,7 +105,7 @@ public class Register extends JDialog {
         }
     }
 
-    private User addUserToDatabase(String name, String username, String email, String phone, String address, String password, String comboBoxValue) {
+    private User addUserToDatabase(String name, String username, String email, String phone, String address, String password, String setRole) {
         User user = null;
         final String URL = "jdbc:mysql://localhost:3306/myshare?user=root&password=";
         final String USERNAME = "root";
@@ -110,9 +113,8 @@ public class Register extends JDialog {
 
         try {
             Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            // Connected to the database successfully...
 
-            String sql = "INSERT INTO users (name, username, email, phone, address, password, comboBoxValue) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, username, email, phone, address, password, setRole) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, username);
@@ -120,12 +122,11 @@ public class Register extends JDialog {
             preparedStatement.setString(4, phone);
             preparedStatement.setString(5, address);
             preparedStatement.setString(6, password);
-            preparedStatement.setString(7, comboBoxValue);
+            preparedStatement.setString(7, setRole);
 
-            // Insert row into the table
             int addedRows = preparedStatement.executeUpdate();
             if (addedRows > 0) {
-                user = new User(name, email, phone, address, password, comboBoxValue);
+                user = new User(name, email, phone, address, password, setRole);
                 user.setUsername(username);
             }
 

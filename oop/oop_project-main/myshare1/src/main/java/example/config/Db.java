@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class Db {
     private final String UName = "root";
     private final String Password = "";
-    private final String URL = "jdbc:mysql://localhost:3306/myshare?user=" + UName + "&password=" + Password;
+    private final String URL = "jdbc:mysql://localhost:3306/myshare" + UName + "&password=" + Password;
 
     private static Db instance;
     private Connection con;
