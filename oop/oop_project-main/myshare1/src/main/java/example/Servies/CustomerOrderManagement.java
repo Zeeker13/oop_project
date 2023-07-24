@@ -1,4 +1,6 @@
-package example.model;
+package example.Servies;
+
+import example.model.CustomerOrder;
 
 import java.sql.*;
 import java.util.ArrayList;

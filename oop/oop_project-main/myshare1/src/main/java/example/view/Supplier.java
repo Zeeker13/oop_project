@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import example.model.Suppliers;
-import example.model.SupplierManagement;
+import example.Servies.SupplierManagement;
 
 public class Supplier extends JFrame {
     private SupplierManagement supplierManagement;

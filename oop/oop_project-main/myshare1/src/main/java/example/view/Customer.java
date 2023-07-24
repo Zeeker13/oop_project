@@ -8,7 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import example.model.CustomerOrder;
-import example.model.CustomerOrderManagement;
+import example.Servies.CustomerOrderManagement;
 
 public class Customer extends JFrame {
     private CustomerOrderManagement orderManagement;
