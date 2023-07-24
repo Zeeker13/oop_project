@@ -11,6 +11,7 @@ public class Inventory extends JFrame {
     private JTextField txt_in;
     private JTextField txt_id;
     private JTextField txt_price;
+    private JTextField txt_quantity; // New field for quantity
     private JButton btn_add;
     private JTextField txt_id2;
     private JButton btn_remove;
@@ -68,27 +69,40 @@ public class Inventory extends JFrame {
         txt_price = new JTextField(10);
         inventory.add(txt_price, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        JLabel itemQuantityLabel = new JLabel("Quantity:"); // New label for quantity
+        inventory.add(itemQuantityLabel, gbc);
+
         gbc.gridx = 1;
         gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        txt_quantity = new JTextField(10); // New text field for quantity
+        inventory.add(txt_quantity, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.NONE;
         btn_add = new JButton("ADD");
         inventory.add(btn_add, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         JLabel removeItemsLabel = new JLabel("Remove Items:");
         inventory.add(removeItemsLabel, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         txt_id2 = new JTextField(10);
         inventory.add(txt_id2, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.NONE;
         btn_remove = new JButton("Remove");
@@ -119,12 +133,13 @@ public class Inventory extends JFrame {
     }
 
     private void addItem() {
-        // Retrieve item details from text fields (txt_in, txt_id, txt_price)
+        // Retrieve item details from text fields (txt_in, txt_id, txt_price, txt_quantity)
         String itemName = txt_in.getText();
         String itemIdInput = txt_id.getText();
         String itemPriceInput = txt_price.getText();
+        String itemQuantityInput = txt_quantity.getText();
 
-        // Validate that item ID and item price contain only numerical characters
+        // Validate that item ID, item price, and quantity contain only numerical characters
         if (!itemIdInput.matches("\\d+")) {
             JOptionPane.showMessageDialog(this, "Invalid Item ID. Please enter a valid integer.");
             return; // Stop further processing
@@ -135,11 +150,17 @@ public class Inventory extends JFrame {
             return; // Stop further processing
         }
 
+        if (!itemQuantityInput.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Invalid Quantity. Please enter a valid integer.");
+            return; // Stop further processing
+        }
+
         int itemId = Integer.parseInt(itemIdInput);
         double itemPrice = Double.parseDouble(itemPriceInput);
+        int itemQuantity = Integer.parseInt(itemQuantityInput);
 
         // Insert item into the database using the Db class
-        String sqlQuery = "INSERT INTO items (id, name, price) VALUES (" + itemId + ", '" + itemName + "', " + itemPrice + ")";
+        String sqlQuery = "INSERT INTO items (id, name, price, quantity) VALUES (" + itemId + ", '" + itemName + "', " + itemPrice + ", " + itemQuantity + ")";
         boolean isInserted = db.ExecuteQuery(sqlQuery);
 
         if (isInserted) {
@@ -154,6 +175,7 @@ public class Inventory extends JFrame {
         txt_in.setText("");
         txt_id.setText("");
         txt_price.setText("");
+        txt_quantity.setText("");
     }
 
     private void removeItem() {

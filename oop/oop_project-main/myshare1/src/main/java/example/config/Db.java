@@ -1,9 +1,10 @@
 package example.config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import example.model.Inventory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Db {
     private final String UName = "root";
@@ -54,5 +55,31 @@ public class Db {
 
     public Connection getConnection() {
         return con;
+    }
+
+    public List<Inventory> getInventoryList() {
+        List<Inventory> inventoryList = new ArrayList<>();
+        try {
+            String query = "SELECT id, name, price, quantity FROM items";
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int itemId = resultSet.getInt("id");
+                String itemName = resultSet.getString("name");
+                double itemPrice = resultSet.getDouble("price");
+                int quantity = resultSet.getInt("quantity");
+
+                Inventory inventory = new Inventory(itemId, itemName, itemPrice, quantity);
+                inventoryList.add(inventory);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println("Error fetching inventory data: " + ex.getMessage());
+        }
+
+        return inventoryList;
     }
 }
