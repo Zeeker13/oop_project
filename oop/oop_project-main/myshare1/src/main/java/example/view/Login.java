@@ -21,6 +21,7 @@ public class Login extends JDialog {
     public Login(JFrame parent) {
         super(parent);
         setTitle("Login");
+
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
         contentPane.add(loginPanel, BorderLayout.CENTER);
