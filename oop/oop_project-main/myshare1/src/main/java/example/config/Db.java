@@ -82,4 +82,33 @@ public class Db {
 
         return inventoryList;
     }
+
+    // Method to update the inventory data in the database
+    public boolean updateInventory(int itemId, String itemName, double itemPrice, int quantity) {
+        try {
+            // Prepare the update query using a PreparedStatement to prevent SQL injection
+            String updateQuery = "UPDATE items SET name = ?, price = ?, quantity = ? WHERE id = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(updateQuery);
+
+            // Set the values for the prepared statement
+            preparedStatement.setString(1, itemName);
+            preparedStatement.setDouble(2, itemPrice);
+            preparedStatement.setInt(3, quantity);
+            preparedStatement.setInt(4, itemId);
+
+            // Execute the update query
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            // Close the PreparedStatement
+            preparedStatement.close();
+
+            // Return true if at least one row is affected, indicating a successful update
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            System.out.println("Error updating inventory data: " + ex.getMessage());
+            return false;
+        }
+    }
+
+
 }
